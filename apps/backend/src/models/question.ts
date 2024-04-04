@@ -11,7 +11,7 @@ interface IQuestion {
 const questionSchema = new Schema<IQuestion>({
   questionText: { type: String, required: true },
   answer: { type: String, required: true },
-  author: { type: String, required: true }
+  author: { type: String, required: true },
 });
 
 // 3. Create a Model.

@@ -7,7 +7,7 @@ declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Express {
     export interface Request {
-      username?: string
+      username?: string;
     }
   }
 }
@@ -18,12 +18,13 @@ const PORT = process.env.PORT ?? 8000;
 const app = express();
 app.use(express.json());
 
-app.use(cookieSession({
-  name: 'session',
-  keys: [],
-  // add options if needed
-}))
-
+app.use(
+  cookieSession({
+    name: 'session',
+    keys: [],
+    // add options if needed
+  }),
+);
 
 // define root route
 app.get('/api/hello', (_, res) => {
@@ -36,8 +37,8 @@ app.listen(PORT, () => {
   console.log(`Now listening on port ${PORT}.`);
 });
 
-function errorHandler (err, req, res, next) {
-  res.status(500).json({ message : err});
+function errorHandler(err, req, res, next) {
+  res.status(500).json({ message: err });
 }
 
 app.use(errorHandler);

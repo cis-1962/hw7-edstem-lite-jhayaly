@@ -8,8 +8,8 @@ interface IUser {
 
 // 2. Create a Schema corresponding to the document interface.
 const userSchema = new Schema<IUser>({
-    username: { type: String, required: true },
-    password: { type: String, required: true },
+  username: { type: String, required: true },
+  password: { type: String, required: true },
 });
 
 // 3. Create a Model.
