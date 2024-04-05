@@ -4,7 +4,24 @@ import HomePage from './homepage';
 import Login from './login';
 import SignUp from './signup';
 import { useNavigate } from 'react-router-dom';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
+//import * as express from 'express';
+//import * as cors from 'cors';
+
+//const express = require('express')
+//var cors = require('cors')
+/*const app = express()
+ 
+app.use(cors())
+ 
+app.get('/products/:id', (req, res) => {
+  res.json({msg: 'This is CORS-enabled for all origins!'})
+})
+ 
+app.listen(3000, () => {
+  // eslint-disable-next-line no-console
+  console.log('CORS-enabled web server listening on port 80')
+})*/
 
 const App = () => {
   const navigate = useNavigate();
@@ -22,27 +39,25 @@ const App = () => {
   };
 
   return (
-    <Router>
       <Routes>
         <Route
           path="/"
-          element={<HomePage navigateToLogin={navigateToLogin} />}
+          element={<HomePage navigateToLogin={navigateToLogin} navigateToSignup={navigateToSignup} />}
         />
         <Route
           path="/login"
           element={
             <Login
-              navigateToSignup={navigateToSignup}
+              //navigateToSignup={navigateToSignup}
               navigateToHomePage={navigateToHomePage}
             />
           }
         />
         <Route
           path="/signup"
-          element={<SignUp navigateToLogin={navigateToLogin} />}
+          element={<SignUp navigateToHomePage={navigateToHomePage} navigateToLogin={navigateToLogin} />}
         />
       </Routes>
-    </Router>
   );
 };
 

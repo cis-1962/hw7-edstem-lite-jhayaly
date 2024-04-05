@@ -16,11 +16,13 @@ router.post('/signup', async (req, res, next) => {
       return res.status(201).json({ message: 'User created!' });
     }
   } catch (err) {
+    console.log("made it to signup but had error");
     next(err);
   }
 });
 
 router.post('/login', async (req, res, next) => {
+    console.log("made it to login");
   const { username, password } = req.body;
   try {
     const currUser = await User.findOne(username);
@@ -44,4 +46,8 @@ router.post('/logout', requireAuth, async (req, res, next) => {
   } catch (err) {
     next(err);
   }
+});
+
+router.get('/loggedin', (req, res) => {
+    return req.session && req.session.user ? res.json({ loggedIn: true }) : res.json({ loggedIn: false });
 });
