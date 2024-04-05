@@ -8,7 +8,7 @@ const SignUp = ({ navigateToHomePage, navigateToLogin }) => {
 
   const handleSignUp = async () => {
     try {
-      await axios.post('/signup', {
+      await axios.post('api/signup', {
         username: user,
         password: pass,
       });

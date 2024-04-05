@@ -1,14 +1,5 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-//import * as React from "react";
-/*import * as ReactDOM from "react-dom";
-import {
-  createHashRouter,
-  RouterProvider,
-} from "react-router-dom";
-
-import Root, { rootLoader } from "./routes/root";
-import Team, { teamLoader } from "./routes/team";*/
 
 // eslint-disable-next-line react/prop-types
 const Login = ({ navigateToHomePage }) => {
@@ -17,7 +8,7 @@ const Login = ({ navigateToHomePage }) => {
 
   const handleLogin = async () => {
     try {
-        await axios.post('/account/login', {  // Changed from '/account/login'
+        await axios.post('/api/login', { 
         username: username,
         password: password
     });
@@ -51,19 +42,3 @@ const Login = ({ navigateToHomePage }) => {
 };
 
 export default Login;
-
-/*const router = createHashRouter([
-    {
-      path: "/login",
-      element: <Login navigateToHomePage={undefined} />,
-      loader: rootLoader,
-      children: [
-      ],
-    },
-  ]);
-  
-  ReactDOM.createRoot(document.getElementById("root")).render(
-    <RouterProvider router={router} />
-  );
-
-//<button onClick={navigateToSignup}>Sign Up</button>*/

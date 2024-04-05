@@ -6,7 +6,7 @@ import PostStream from './poststream';
 // eslint-disable-next-line react/prop-types
 const HomePage = ({ navigateToLogin, navigateToSignup }) => {
   const [posts, setPosts] = useState([]);
-  const [loggedIn, setLoggedIn] = useState(true);
+  const [loggedIn, setLoggedIn] = useState(false);
 
   const fetchPosts = () => {
     const intervalId = setInterval(() => {
@@ -21,7 +21,7 @@ const HomePage = ({ navigateToLogin, navigateToSignup }) => {
 
   useEffect(() => {
     // Check if user is logged in
-    axios.get('/loggedin')
+    axios.get('api/loggedin')
       .then(response => {
         if (response.data.loggedIn) {
           setLoggedIn(true);
@@ -36,7 +36,7 @@ const HomePage = ({ navigateToLogin, navigateToSignup }) => {
 
   const handleLogout = async () => {
     try {
-      await axios.post('/logout');
+      await axios.post('api/logout');
       setLoggedIn(false);
       navigateToLogin();
     } catch (error) {
@@ -54,7 +54,7 @@ const HomePage = ({ navigateToLogin, navigateToSignup }) => {
             <PostForm
               onSubmit={(text) => {
                 axios
-                  .post('/question/add', text)
+                  .post('api/add', text)
                   .then(() => setPosts((prevPosts) => [...prevPosts, text]))
                   // eslint-disable-next-line no-console
                   .catch((error) => console.error('Error posting:', error.response.data));
