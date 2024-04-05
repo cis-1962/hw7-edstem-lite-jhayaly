@@ -12,7 +12,6 @@ const SignUp = ({ navigateToHomePage, navigateToLogin }) => {
         username: user,
         password: pass,
       });
-      // Redirect to login page after successful sign up
       navigateToHomePage();
     } catch (error) {
       // eslint-disable-next-line no-console
