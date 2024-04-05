@@ -7,6 +7,7 @@ const router = express.Router();
 router.post('/signup', async (req, res, next) => {
   const { username, password } = req.body;
   try {
+    // stuff seems to be breaking here!
     const userExists = await User.findOne(username);
     if (userExists) {
       return res.status(409).json({ message: 'Username exists!' });
@@ -51,3 +52,5 @@ router.post('/logout', requireAuth, async (req, res, next) => {
 router.get('/loggedin', (req, res) => {
     return req.session && req.session.user ? res.json({ loggedIn: true }) : res.json({ loggedIn: false });
 });
+
+export default router

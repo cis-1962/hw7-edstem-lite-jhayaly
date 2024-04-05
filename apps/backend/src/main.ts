@@ -4,6 +4,8 @@ import mongoose from 'mongoose';
 import cookieSession from 'cookie-session';
 import cors from 'cors'; // try
 
+import accountRouter from './routes/account';
+
 const todoRoutes = express.Router(); // try
 
 declare global {
@@ -37,10 +39,8 @@ app.use(
   }),
 );
 
-// define root route
-app.get('/api/hello', (_, res) => {
-  res.json({ message: 'Hello, frontend!' });
-});
+// register account routes!
+app.use('/api/account', accountRouter)
 
 // listen
 app.listen(PORT, () => {
