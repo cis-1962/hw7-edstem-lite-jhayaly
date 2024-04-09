@@ -1,70 +1,49 @@
-import { useState } from 'react';
-import { HiReply, HiX } from 'react-icons/hi';
-import { v4 as uuidv4 } from 'uuid';
-
-import { Message, MessageWithId } from './types';
+/* eslint-disable react/prop-types */
+import React, { useState } from 'react';
+import { HiReply } from 'react-icons/hi';
 import PostForm from './newform';
 
-const PostStream = ({
-  author,
-  text,
-  depth,
-}: Message & {
-  key: string;
-  depth: number;
-}) => {
-  const [reply, setReply] = useState<MessageWithId>();
+const PostStream = ({ post }) => {
   const [replyOpen, setReplyOpen] = useState(false);
+  const [reply, setReply] = useState(null);
+
+  const handleReplySubmit = (newReply) => {
+    setReply(newReply);
+    setReplyOpen(false);
+  };
+
 
   return (
-    <li className="flex flex-col">
-      <div>
-        <p className="text-sm text-sky-700 tracking-wide">{author}</p>
-        <p className="mt-1">{text}</p>
-      </div>
-      {depth < 1 ? (
-        <>
-          {
-            <ul className="border-l-gray-300 border-l-2 mb-2 pl-3 flex flex-col gap-3 py-1">
-              {
-                <PostStream
-                  key={reply.id}
-                  depth={depth + 1}
-                  author={''}
-                  text={''}
-                />
-              }
-            </ul>
-          }
-          <button
-            type="button"
-            onClick={() => setReplyOpen((v) => !v)}
-            className="mr-auto text-gray-400 text-sm flex gap-1 items-center tracking-wide"
-          >
-            {replyOpen ? (
-              <>
-                <HiX />
-                Cancel
-              </>
-            ) : (
-              <>
-                <HiReply />
-                Reply
-              </>
+    <li className="media">
+      <div className="media-content">
+        <p className="is-size-5 has-text-weight-bold has-text-info">{post.title}</p>
+        <p className="has-text-info">{post.author}</p>
+        <p className="has-text-white">{post.questionText}</p>
+        {reply && (
+          <div className="ml-6">
+            <p className="has-text-info">{reply.title}</p>
+            <p className="has-text-info">{reply.author}</p>
+            <p className="has-text-white">{reply.text}</p>
+          </div>
+        )}
+        {!reply && (
+          <>
+            <button
+              type="button"
+              onClick={() => setReplyOpen(true)}
+              className="button is-info is-small"
+            >
+              <HiReply />
+              Reply
+            </button>
+            {replyOpen && (
+              <div className="mt-2">
+                <PostForm onSubmit={handleReplySubmit} />
+              </div>
             )}
-          </button>
-          {replyOpen && (
-            <div className="mt-2">
-              <PostForm
-                onSubmit={(text) => {
-                  setReplyOpen(false);
-                  setReply({ id: uuidv4(), ...text });
-                }}
-              />
-            </div>
-          )}
-        </>
-      ) : null}
+          </>
+        )}
+      </div>
     </li>
   );
 };

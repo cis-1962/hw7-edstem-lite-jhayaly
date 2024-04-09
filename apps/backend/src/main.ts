@@ -1,57 +1,57 @@
+/* eslint-disable no-console */
 import express, { Response } from 'express';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
-import cookieSession from 'cookie-session';
-import cors from 'cors'; // try
-
-const todoRoutes = express.Router(); // try
-
-declare global {
-  // eslint-disable-next-line @typescript-eslint/no-namespace
-  namespace Express {
-    export interface Request {
-      username?: string;
-    }
-  }
-}
-// read environment variables from .env file
-dotenv.config();
-const PORT = process.env.PORT ?? 8002;
-const key1 = process.env.SESSION_KEY1;
-const key2 = process.env.SESSION_KEY2;
+import cors from 'cors';
+import session from 'express-session';
+import MongoDBStore from 'connect-mongodb-session';
+import accountRouter from './routes/account';
+import questionRouter from './routes/questions';
 
 const app = express();
 app.use(express.json());
 
-app.use(cors()); // try
-app.use(todoRoutes); // try
+dotenv.config();
+const PORT = process.env.PORT ?? 8002;
+const key1 = process.env.SESSION_KEY1;
 
+mongoose.connect('mongodb+srv://jhayaly:otYJmzQ19fKp5FQS@miniedcluster.udlqfp8.mongodb.net/')
+  .then(() => {
+    console.log('MongoDB connected successfully');
+  })
+  .catch((error) => {
+    console.error('MongoDB connection error:', error);
+  });
 
-
-app.use(
-  cookieSession({
-    name: 'session',
-    keys: [key1!, key2!], 
-    secure: true, // Set to true if using HTTPS
-    httpOnly: true,
-  }),
-);
-
-// define root route
-app.get('/api/hello', (_, res) => {
-  res.json({ message: 'Hello, frontend!' });
+const MongoDBStoreInstance = MongoDBStore(session);
+const store = new MongoDBStoreInstance({
+  uri: 'mongodb+srv://jhayaly:otYJmzQ19fKp5FQS@miniedcluster.udlqfp8.mongodb.net/', 
+  collection: 'sessions' 
 });
 
-// listen
-app.listen(PORT, () => {
-  // eslint-disable-next-line no-console
-  console.log(`Now listening on port ${PORT}.`);
-});
+app.use(session({
+  secret: key1 ?? 'janas-secret-key', 
+  resave: false,
+  saveUninitialized: false,
+  store: store, 
+  cookie: {
+    maxAge: 1000 * 60 * 60 * 24 
+  }
+}));
 
-function errorHandler(err : Error, req, res : Response, next) {
+app.use(cors({
+  origin: 'http://localhost:3002', 
+  credentials: true 
+}));
+
+app.use('/api/account', accountRouter);
+app.use('/api/questions', questionRouter);
+
+function errorHandler(err: Error, req: express.Request, res: Response) {
   res.status(500).json({ message: err.message });
 }
-
 app.use(errorHandler);
 
-mongoose.connect('mongodb://localhost:27017/hw7-edstem-lite-jhayaly'); //go to oh to check on this + mongodb
+app.listen(PORT, () => {
+  console.log(`Now listening on port ${PORT}.`);
+});

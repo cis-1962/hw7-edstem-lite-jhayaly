@@ -1,4 +1,4 @@
-import { useState } from 'react';
+/*import { useState } from 'react';
 import { Message } from './types';
 
 const PostForm = ({
@@ -51,4 +51,60 @@ const PostForm = ({
   );
 };
 
+export default PostForm;*/
+
+import { useState } from 'react';
+import { Message } from './types';
+
+const PostForm = ({
+  onSubmit,
+  clear,
+}: {
+  onSubmit: (message: Message) => void;
+  clear?: boolean;
+}) => {
+  //const [author, setAuthor] = useState('');
+  const [text, setText] = useState('');
+  const [title, setTitle] = useState('');
+
+  const fieldsInvalid = !(title.trim().length && text.trim().length);
+
+  return (
+    <form onSubmit={(evt) => {
+        evt.preventDefault();
+        onSubmit({ title, text });
+        if (clear) {
+          setTitle('');
+          setText('');
+        }
+      }}
+      className="flex flex-col"
+    >
+      <input
+        type="text"
+        value={title}
+        onChange={(evt) => setTitle(evt.target.value)}
+        placeholder="Title"
+        className="input mb-3" // Replace existing classes with Bulma's classes
+      />
+      <textarea
+        value={text}
+        onChange={(evt) => setText(evt.target.value)}
+        placeholder="Your Message Here"
+        className="textarea mb-3" // Replace existing classes with Bulma's classes
+      />
+      <button
+        type="submit"
+        className={`button ${
+          fieldsInvalid ? 'is-primary' : 'is-link'
+        } ml-auto`} // Replace existing classes with Bulma's classes
+        disabled={fieldsInvalid}
+      >
+        Submit
+      </button>
+    </form>
+  );
+};
+
 export default PostForm;
+

@@ -5,7 +5,7 @@ export default function requireAuth(
   res: Response,
   next: NextFunction,
 ) {
-  if (!req.session || !req.session.user || req.session?.user !== '') {
+  if (!req.session || !req.session.user) {
     next(new Error('Unauthenticated User'));
   } else {
     next();

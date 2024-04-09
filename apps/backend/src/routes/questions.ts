@@ -14,10 +14,10 @@ router.get('/questions', async (req, res, next) => {
 });
 
 router.post('/add', requireAuth, async (req, res, next) => {
-  const questionText = req.body;
-  const author = req.session?.username;
+  const { questionText } = req.body;
+  const actualAuthor = req.session?.user.username;
   try {
-    const newQuestion = new Question({ questionText, author });
+    const newQuestion = new Question({ questionText: questionText.text, title: questionText.title, author: actualAuthor, answer: " " });
     await newQuestion.save();
     res.status(201).json({ message: 'Question added', question: newQuestion });
   } catch (err) {
@@ -26,7 +26,6 @@ router.post('/add', requireAuth, async (req, res, next) => {
 });
 
 router.post('/answer', requireAuth, async (req, res, next) => {
-  //const { questionText, answer, author, _id } = req.body;
   const { answer, _id } = req.body;
 
   try {
@@ -40,3 +39,5 @@ router.post('/answer', requireAuth, async (req, res, next) => {
     next(err);
   }
 });
+
+export default router;

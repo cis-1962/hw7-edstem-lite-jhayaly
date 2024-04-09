@@ -7,25 +7,25 @@ const router = express.Router();
 router.post('/signup', async (req, res, next) => {
   const { username, password } = req.body;
   try {
-    const userExists = await User.findOne(username);
+    const userExists = await User.findOne({ username: username });
     if (userExists) {
       return res.status(409).json({ message: 'Username exists!' });
     } else {
-      const newAcc = new User({ username, password });
+      const newAcc = new User({ username: username, password: password });
       await newAcc.save();
+      req.session!.user = newAcc;
       return res.status(201).json({ message: 'User created!' });
     }
   } catch (err) {
-    console.log("made it to signup but had error");
     next(err);
   }
 });
 
+
 router.post('/login', async (req, res, next) => {
-    console.log("made it to login");
   const { username, password } = req.body;
   try {
-    const currUser = await User.findOne(username);
+    const currUser = await User.findOne({ username : username });
     if (!currUser) {
       return res.status(409).json({ message: 'Username invalid!' });
     } else if (currUser.password !== password) {
@@ -48,6 +48,8 @@ router.post('/logout', requireAuth, async (req, res, next) => {
   }
 });
 
-router.get('/loggedin', (req, res) => {
-    return req.session && req.session.user ? res.json({ loggedIn: true }) : res.json({ loggedIn: false });
+router.get('/loggedin', requireAuth, (req, res) => { 
+  return req.session && req.session.user ? res.json({ loggedIn: true }) : res.json({ loggedIn: false });
 });
+
+export default router;
