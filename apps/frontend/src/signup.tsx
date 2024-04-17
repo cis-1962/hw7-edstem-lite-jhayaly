@@ -5,13 +5,13 @@ import React, { useState } from 'react';
 import axios from 'axios';
 
 const SignUp = ({ navigateToHomePage, navigateToLogin }) => {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleSignUp = async () => {
     try {
       await axios.post('/api/account/signup', {
-        username: username,
+        email: email,
         password: password,
       });
       navigateToHomePage();
@@ -28,9 +28,9 @@ const SignUp = ({ navigateToHomePage, navigateToLogin }) => {
           <input
             className="input"
             type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            placeholder="Username"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Email"
           />
         </div>
       </div>

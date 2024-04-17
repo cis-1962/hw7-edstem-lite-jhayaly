@@ -21,7 +21,9 @@
     "dotenv": "^16.4.5",
     "express-session": "^1.18.0",
     "mongoose": "^8.2.3",
-    "turbo": "^1.11.2"
+    "openai": "^4.36.0",
+    "turbo": "^1.11.2",
+    "verifalia": "^4.1.0"
   },
   "devDependencies": {
     "@usebruno/cli": "^1.11.0"

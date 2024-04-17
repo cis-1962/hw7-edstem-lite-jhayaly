@@ -1,6 +1,5 @@
 import React from 'react';
 import HomePage from './homepage';
-//import { useState } from 'react';
 import Login from './login';
 import SignUp from './signup';
 import { useNavigate } from 'react-router-dom';
@@ -31,7 +30,6 @@ const App = () => {
           path="/login"
           element={
             <Login
-              //navigateToSignup={navigateToSignup}
               navigateToHomePage={navigateToHomePage}
             />
           }
@@ -44,4 +42,5 @@ const App = () => {
   );
 };
 
+//using nested routing? createRouter function- 
 export default App;

@@ -1,33 +1,43 @@
 import express from 'express';
 import User from '../models/user';
 import requireAuth from '../middlewares/require-auth';
+//import { getEmailValidation } from 'verifalia';
 
 const router = express.Router();
 
 router.post('/signup', async (req, res, next) => {
-  const { username, password } = req.body;
+  const { email, password } = req.body;
   try {
-    const userExists = await User.findOne({ username: username });
+    //const verifalia = await import('verifalia/node/esm/index.mjs');
+    //const emailVal = await getEmailValidation(email);
+    //if (!emailVal.toLowerCase().includes("success")) {
+      //return res.status(409).json({ message: 'Not a valid email address!' });
+    if (!email.endsWith('.edu')) {
+      return res.status(409).json({ message: 'Not an edu email!' });
+    }
+    const userExists = await User.findOne({ email: email });
     if (userExists) {
-      return res.status(409).json({ message: 'Username exists!' });
+      return res.status(409).json({ message: 'You already have an account! Log in instead.' });
     } else {
-      const newAcc = new User({ username: username, password: password });
+      const newAcc = new User({ email: email, password: password });
       await newAcc.save();
       req.session!.user = newAcc;
       return res.status(201).json({ message: 'User created!' });
     }
   } catch (err) {
+    //console.log("reached sign up but throwing error");
+    //console.log(err);
     next(err);
   }
 });
 
 
 router.post('/login', async (req, res, next) => {
-  const { username, password } = req.body;
+  const { email, password } = req.body;
   try {
-    const currUser = await User.findOne({ username : username });
+    const currUser = await User.findOne({ email : email });
     if (!currUser) {
-      return res.status(409).json({ message: 'Username invalid!' });
+      return res.status(409).json({ message: 'No account found! Sign up?' });
     } else if (currUser.password !== password) {
       return res.status(409).json({ message: 'Incorrect password!' });
     } else {
@@ -35,6 +45,8 @@ router.post('/login', async (req, res, next) => {
       return res.status(201).json({ message: 'Logged in' });
     }
   } catch (err) {
+    //console.log("reached sign up but throwing error");
+    //console.log(err);
     next(err);
   }
 });

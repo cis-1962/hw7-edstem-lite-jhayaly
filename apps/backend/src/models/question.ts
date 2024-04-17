@@ -4,16 +4,20 @@ import { Schema, model } from 'mongoose';
 interface IQuestion {
   questionText: string;
   title: string;
-  answer?: string;
-  author?: string;
+  gptAnswer: string;
+  author: string;
+  category: string;
+  answers?: string[]
 }
 
 // 2. Create a Schema corresponding to the document interface.
 const questionSchema = new Schema<IQuestion>({
   questionText: { type: String, required: true },
   title: { type: String, required: true },
-  answer: { type: String, required: false },
-  author: { type: String, required: false },
+  gptAnswer: { type: String, required: true },
+  author: { type: String, required: true },
+  category: { type : String, required: true}, 
+  answers: {type: [String], required: false}
 });
 
 // 3. Create a Model.

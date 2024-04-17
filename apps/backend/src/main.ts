@@ -15,7 +15,8 @@ dotenv.config();
 const PORT = process.env.PORT ?? 8002;
 const key1 = process.env.SESSION_KEY1;
 
-mongoose.connect('mongodb+srv://jhayaly:otYJmzQ19fKp5FQS@miniedcluster.udlqfp8.mongodb.net/')
+
+mongoose.connect('mongodb+srv://jhayaly:otYJmzQ19fKp5FQS@cluster0.ki0ozef.mongodb.net/?tls=true')
   .then(() => {
     console.log('MongoDB connected successfully');
   })
@@ -25,7 +26,7 @@ mongoose.connect('mongodb+srv://jhayaly:otYJmzQ19fKp5FQS@miniedcluster.udlqfp8.m
 
 const MongoDBStoreInstance = MongoDBStore(session);
 const store = new MongoDBStoreInstance({
-  uri: 'mongodb+srv://jhayaly:otYJmzQ19fKp5FQS@miniedcluster.udlqfp8.mongodb.net/', 
+  uri: 'mongodb+srv://jhayaly:otYJmzQ19fKp5FQS@cluster0.ki0ozef.mongodb.net/?tls=true', 
   collection: 'sessions' 
 });
 
